@@ -4358,7 +4358,9 @@ const api = {
       }
 
       if (parts[3] === 'test-notify' && method === 'POST') {
+        console.log('[DEBUG] Handling test-notify for subscription:', id);
         const result = await testSingleSubscriptionNotification(id, env);
+        console.log('[DEBUG] Test notify result:', result);
         return new Response(JSON.stringify(result), { status: result.success ? 200 : 500, headers: { 'Content-Type': 'application/json' } });
       }
 
@@ -5252,6 +5254,7 @@ async function sendNotificationToAllChannels(title, commonContent, config, logPr
         console.log(`${logPrefix} 发送邮件通知 ${success ? '成功' : '失败'}`);
     }
     if (config.ENABLED_NOTIFIERS.includes('bark')) {
+        console.log('[DEBUG] Bark notification enabled');
         const barkContent = commonContent.replace(/(\**|\*|##|#|`)/g, '');
         const success = await sendBarkNotification(title, barkContent, config);
         console.log(`${logPrefix} 发送Bark通知 ${success ? '成功' : '失败'}`);
